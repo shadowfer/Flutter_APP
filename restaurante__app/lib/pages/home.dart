@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:restaurante__app/model/burger_model.dart';
 import 'package:restaurante__app/model/category_model.dart';
+import 'package:restaurante__app/model/pizza_model.dart';
+import 'package:restaurante__app/service/burger_data.dart';
 import 'package:restaurante__app/service/category_data.dart';
+import 'package:restaurante__app/service/pizza_data.dart';
 import 'package:restaurante__app/service/widget_support.dart';
 
 // Clase Home, representa la pantalla principal
@@ -15,7 +19,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // Lista de categorías cargadas desde `category_data.dart`
   List<CategoryModel> categories = [];
-
+  List<PizzaModel> pizzas = [];
+  List<BurgerModel> burgers = [];
   // Variable para rastrear la categoría seleccionada
   String track = "0";
 
@@ -23,6 +28,8 @@ class _HomeState extends State<Home> {
   void initState() {
     // Carga las categorías al inicializar la pantalla
     categories = getCategories();
+    pizzas = getPizza();
+    burgers = getburger();
     super.initState();
   }
 
@@ -128,8 +135,111 @@ class _HomeState extends State<Home> {
                 },
               ),
             ),
+            SizedBox(height: 10.0), // Espaciado entre secciones
+            track == "0"
+                ? Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(right: 10.0),
+                      child: GridView.builder(
+                        padding: EdgeInsets.zero,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.69,
+                          mainAxisSpacing: 20.0,
+                          crossAxisSpacing: 15.0,
+                        ),
+                        itemCount: pizzas.length,
+                        itemBuilder: (context, index) {
+                          return FoodTile(
+                            pizzas[index].name!,
+                            pizzas[index].image!,
+                            pizzas[index].price!,
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                : track == "1"
+                    ? Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(right: 10.0),
+                          child: GridView.builder(
+                            padding: EdgeInsets.zero,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.69,
+                              mainAxisSpacing: 20.0,
+                              crossAxisSpacing: 15.0,
+                            ),
+                            itemCount: burgers.length,
+                            itemBuilder: (context, index) {
+                              return FoodTile(
+                                burgers[index].name!,
+                                burgers[index].image!,
+                                burgers[index].price!,
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    : Container(),
           ],
         ),
+      ),
+    );
+  }
+
+  // Widget que representa cada comida en el grid
+  Widget FoodTile(String name, String image, String price) {
+    return Container(
+      margin: EdgeInsets.only(right: 10.0),
+      padding: EdgeInsets.only(left: 10.0, top: 10.0),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black38),
+          borderRadius: BorderRadius.circular(20)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Image.asset(
+              image,
+              width: 100,
+              height: 100,
+              fit: BoxFit.contain,
+            ),
+          ),
+          Text(
+            name,
+            style: AppWidget.boldTextFeildStyle(),
+          ),
+          Text(
+            "\$" + price,
+            style: AppWidget.priceTextFeildStyle(),
+          ),
+          Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                height: 50,
+                width: 80,
+                decoration: BoxDecoration(
+                  color: Color(0xffef2b39),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    bottomRight: Radius.circular(20.0),
+                  ),
+                ),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                  size: 30.0,
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
