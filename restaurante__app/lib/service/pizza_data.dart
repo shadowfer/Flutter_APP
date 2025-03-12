@@ -1,5 +1,4 @@
 // pizza_data.dart
-import 'package:flutter/foundation.dart';
 import 'package:restaurante__app/model/pizza_model.dart';
 
 List<PizzaModel> getPizza() {

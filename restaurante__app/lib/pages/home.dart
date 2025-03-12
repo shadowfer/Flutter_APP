@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:restaurante__app/model/burger_model.dart';
 import 'package:restaurante__app/model/category_model.dart';
+import 'package:restaurante__app/model/chinese_model.dart';
+import 'package:restaurante__app/model/mexican_model.dart';
 import 'package:restaurante__app/model/pizza_model.dart';
 import 'package:restaurante__app/service/burger_data.dart';
 import 'package:restaurante__app/service/category_data.dart';
+import 'package:restaurante__app/service/chinese_data.dart';
+import 'package:restaurante__app/service/mexican_data.dart';
 import 'package:restaurante__app/service/pizza_data.dart';
 import 'package:restaurante__app/service/widget_support.dart';
 
@@ -21,6 +25,8 @@ class _HomeState extends State<Home> {
   List<CategoryModel> categories = [];
   List<PizzaModel> pizzas = [];
   List<BurgerModel> burgers = [];
+  List<ChineseModel> chinese = [];
+  List<MexicanModel> mexican = [];
   // Variable para rastrear la categoría seleccionada
   String track = "0";
 
@@ -30,6 +36,8 @@ class _HomeState extends State<Home> {
     categories = getCategories();
     pizzas = getPizza();
     burgers = getburger();
+    chinese = getChinese(); // Carga de comida china
+    mexican = getMexican(); // Carga de comida mexicana
     super.initState();
   }
 
@@ -118,7 +126,7 @@ class _HomeState extends State<Home> {
             SizedBox(height: 20.0), // Espaciado entre secciones
 
             // Sección de categorías (horizontal)
-            Container(
+            SizedBox(
               height: 70, // Altura del contenedor de categorías
               child: ListView.builder(
                 shrinkWrap: true,
@@ -128,8 +136,8 @@ class _HomeState extends State<Home> {
                     categories.length, // Número de categorías disponibles
                 itemBuilder: (context, index) {
                   return CategoryTile(
-                    categories[index].name!, // Nombre de la categoría
-                    categories[index].image!, // Imagen de la categoría
+                    categories[index].name, // Nombre de la categoría
+                    categories[index].image, // Imagen de la categoría
                     index.toString(), // Índice de la categoría
                   );
                 },
@@ -151,9 +159,9 @@ class _HomeState extends State<Home> {
                         itemCount: pizzas.length,
                         itemBuilder: (context, index) {
                           return FoodTile(
-                            pizzas[index].name!,
-                            pizzas[index].image!,
-                            pizzas[index].price!,
+                            pizzas[index].name,
+                            pizzas[index].image,
+                            pizzas[index].price,
                           );
                         },
                       ),
@@ -175,15 +183,63 @@ class _HomeState extends State<Home> {
                             itemCount: burgers.length,
                             itemBuilder: (context, index) {
                               return FoodTile(
-                                burgers[index].name!,
-                                burgers[index].image!,
-                                burgers[index].price!,
+                                burgers[index].name,
+                                burgers[index].image,
+                                burgers[index].price,
                               );
                             },
                           ),
                         ),
                       )
-                    : Container(),
+                    : track == "2" // Para la categoría de "Chinese"
+                        ? Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(right: 10.0),
+                              child: GridView.builder(
+                                padding: EdgeInsets.zero,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 0.69,
+                                  mainAxisSpacing: 20.0,
+                                  crossAxisSpacing: 15.0,
+                                ),
+                                itemCount: chinese.length,
+                                itemBuilder: (context, index) {
+                                  return FoodTile(
+                                    chinese[index].name,
+                                    chinese[index].image,
+                                    chinese[index].price,
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                        : track == "3" // Para la categoría de "Mexican"
+                            ? Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 10.0),
+                                  child: GridView.builder(
+                                    padding: EdgeInsets.zero,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 0.69,
+                                      mainAxisSpacing: 20.0,
+                                      crossAxisSpacing: 15.0,
+                                    ),
+                                    itemCount: mexican.length,
+                                    itemBuilder: (context, index) {
+                                      return FoodTile(
+                                        mexican[index].name,
+                                        mexican[index].image,
+                                        mexican[index].price,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              )
+                            : Container(),
           ],
         ),
       ),
@@ -214,7 +270,7 @@ class _HomeState extends State<Home> {
             style: AppWidget.boldTextFeildStyle(),
           ),
           Text(
-            "\$" + price,
+            "\$$price",
             style: AppWidget.priceTextFeildStyle(),
           ),
           Spacer(),
