@@ -4,6 +4,7 @@ import 'package:restaurante__app/model/category_model.dart';
 import 'package:restaurante__app/model/chinese_model.dart';
 import 'package:restaurante__app/model/mexican_model.dart';
 import 'package:restaurante__app/model/pizza_model.dart';
+import 'package:restaurante__app/pages/detail_page.dart';
 import 'package:restaurante__app/service/burger_data.dart';
 import 'package:restaurante__app/service/category_data.dart';
 import 'package:restaurante__app/service/chinese_data.dart';
@@ -11,7 +12,6 @@ import 'package:restaurante__app/service/mexican_data.dart';
 import 'package:restaurante__app/service/pizza_data.dart';
 import 'package:restaurante__app/service/widget_support.dart';
 
-// Clase Home, representa la pantalla principal
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -19,25 +19,21 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-// Estado de la pantalla principal
 class _HomeState extends State<Home> {
-  // Lista de categorías cargadas desde `category_data.dart`
   List<CategoryModel> categories = [];
   List<PizzaModel> pizzas = [];
   List<BurgerModel> burgers = [];
   List<ChineseModel> chinese = [];
   List<MexicanModel> mexican = [];
-  // Variable para rastrear la categoría seleccionada
   String track = "0";
 
   @override
   void initState() {
-    // Carga las categorías al inicializar la pantalla
     categories = getCategories();
     pizzas = getPizza();
     burgers = getburger();
-    chinese = getChinese(); // Carga de comida china
-    mexican = getMexican(); // Carga de comida mexicana
+    chinese = getChinese();
+    mexican = getMexican();
     super.initState();
   }
 
@@ -45,38 +41,33 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.only(
-            left: 10.0, top: 10.0), // Margen para no pegarse a los bordes
+        margin: EdgeInsets.only(left: 10.0, top: 10.0),
         child: Column(
           children: [
-            // Sección de encabezado con el logo y la imagen de usuario
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Logo de la app
                     Image.asset(
                       "images/logo.png",
                       width: 100,
                       fit: BoxFit.contain,
                       height: 50.0,
                     ),
-                    // Texto debajo del logo
                     Text(
                       "Order your favorite food",
                       style: AppWidget.simpleTextFieldStyle(),
                     ),
                   ],
                 ),
-                // Imagen del usuario en la esquina superior derecha
                 Padding(
                   padding: const EdgeInsets.only(right: 10.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10.0),
                     child: Image.asset(
-                      "images/boy.jpg",
+                      "images/boy1.png",
                       height: 60,
                       width: 60,
                       fit: BoxFit.cover,
@@ -85,9 +76,7 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            SizedBox(height: 20.0), // Espaciado entre secciones
-
-            // Sección de barra de búsqueda
+            SizedBox(height: 20.0),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -102,12 +91,11 @@ class _HomeState extends State<Home> {
                     child: TextField(
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "¿Qué se te antoja?", // Texto de búsqueda
+                        hintText: "¿Qué se te antoja?",
                       ),
                     ),
                   ),
                 ),
-                // Icono de búsqueda a la derecha de la barra
                 Container(
                   margin: EdgeInsets.only(right: 10.0),
                   padding: EdgeInsets.all(8),
@@ -123,27 +111,23 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            SizedBox(height: 20.0), // Espaciado entre secciones
-
-            // Sección de categorías (horizontal)
+            SizedBox(height: 20.0),
             SizedBox(
-              height: 70, // Altura del contenedor de categorías
+              height: 70,
               child: ListView.builder(
                 shrinkWrap: true,
-                scrollDirection:
-                    Axis.horizontal, // Para desplazamiento horizontal
-                itemCount:
-                    categories.length, // Número de categorías disponibles
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
                 itemBuilder: (context, index) {
                   return CategoryTile(
-                    categories[index].name, // Nombre de la categoría
-                    categories[index].image, // Imagen de la categoría
-                    index.toString(), // Índice de la categoría
+                    categories[index].name,
+                    categories[index].image,
+                    index.toString(),
                   );
                 },
               ),
             ),
-            SizedBox(height: 10.0), // Espaciado entre secciones
+            SizedBox(height: 10.0),
             track == "0"
                 ? Expanded(
                     child: Container(
@@ -191,7 +175,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       )
-                    : track == "2" // Para la categoría de "Chinese"
+                    : track == "2"
                         ? Expanded(
                             child: Container(
                               margin: EdgeInsets.only(right: 10.0),
@@ -215,7 +199,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           )
-                        : track == "3" // Para la categoría de "Mexican"
+                        : track == "3"
                             ? Expanded(
                                 child: Container(
                                   margin: EdgeInsets.only(right: 10.0),
@@ -246,65 +230,89 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // Widget que representa cada comida en el grid
   Widget FoodTile(String name, String image, String price) {
     return Container(
       margin: EdgeInsets.only(right: 10.0),
-      padding: EdgeInsets.only(left: 10.0, top: 10.0),
+      padding: EdgeInsets.all(10.0), // 🔹 Más padding para darle aire
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.black38),
-          borderRadius: BorderRadius.circular(20)),
+        border: Border.all(color: Colors.black38),
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment:
+            MainAxisAlignment.spaceBetween, // 🔹 Espaciado uniforme
+        crossAxisAlignment:
+            CrossAxisAlignment.center, // 🔹 Centra todo horizontalmente
         children: [
+          SizedBox(height: 10), // 🔹 Baja la imagen un poco más
           Center(
             child: Image.asset(
               image,
-              width: 100,
-              height: 100,
+              width: MediaQuery.of(context).size.width *
+                  0.30, // 🔹 Un poco más grande
+              height: MediaQuery.of(context).size.height *
+                  0.14, // 🔹 Ajusta la altura
               fit: BoxFit.contain,
             ),
           ),
-          Text(
-            name,
-            style: AppWidget.boldTextFeildStyle(),
+          SizedBox(height: 25), // 🔹 Baja el nombre
+          Align(
+            alignment: Alignment
+                .centerLeft, // 🔹 Mantiene el texto alineado a la izquierda
+            child: Text(
+              name,
+              style: AppWidget.boldTextFeildStyle(),
+            ),
           ),
-          Text(
-            "\$$price",
-            style: AppWidget.priceTextFeildStyle(),
+          SizedBox(height: 20), // 🔹 Baja el precio más
+          Align(
+            alignment: Alignment.centerLeft, // 🔹 Mantiene alineación
+            child: Text(
+              "\$$price",
+              style: AppWidget.priceTextFeildStyle(),
+            ),
           ),
           Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(
-                height: 50,
-                width: 80,
-                decoration: BoxDecoration(
-                  color: Color(0xffef2b39),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    bottomRight: Radius.circular(20.0),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DetailPage(image: image, name: name, price: price),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 50,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: Color(0xffef2b39),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   ),
-                ),
-                child: Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.white,
-                  size: 30.0,
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                    size: 30.0,
+                  ),
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
   }
 
-  // Widget que representa cada categoría en la lista
   Widget CategoryTile(String name, String image, String categoryindex) {
     return GestureDetector(
       onTap: () {
-        // Actualiza la categoría seleccionada y redibuja el widget
         track = categoryindex.toString();
         setState(() {});
       },
@@ -312,25 +320,23 @@ class _HomeState extends State<Home> {
           ? Container(
               margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
               child: Material(
-                elevation: 3.0, // Agrega sombra para un efecto elevado
+                elevation: 3.0,
                 borderRadius: BorderRadius.circular(20.0),
                 child: Container(
                   padding: EdgeInsets.only(left: 10.0, right: 10.0),
                   decoration: BoxDecoration(
-                    color: Color(0xffef2b39), // Rojo cuando está seleccionada
+                    color: Color(0xffef2b39),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: Row(
                     children: [
-                      // Imagen de la categoría
                       Image.asset(
                         image,
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover,
                       ),
-                      SizedBox(width: 10.0), // Espaciado entre imagen y texto
-                      // Nombre de la categoría
+                      SizedBox(width: 10.0),
                       Text(
                         name,
                         style: AppWidget.whiteTextFieldStyle(),
@@ -344,21 +350,18 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.only(left: 20.0, right: 20.0),
               margin: EdgeInsets.only(right: 20.0, bottom: 10.0),
               decoration: BoxDecoration(
-                color: Color(
-                    0xFFececf8), // Color de fondo cuando NO está seleccionada
+                color: Color(0xFFececf8),
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: Row(
                 children: [
-                  // Imagen de la categoría
                   Image.asset(
                     image,
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
                   ),
-                  SizedBox(width: 10.0), // Espaciado entre imagen y texto
-                  // Nombre de la categoría
+                  SizedBox(width: 10.0),
                   Text(
                     name,
                     style: AppWidget.simpleTextFieldStyle(),
@@ -369,6 +372,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
-//Continuando con el proyecto 
-//No encontre Motivacion , mañana continuo con el proyecto
