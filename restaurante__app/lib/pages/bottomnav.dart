@@ -50,20 +50,24 @@ class _BottomnavState extends State<Bottomnav> {
         },
         items: [
           Icon(
-            Icons.home_outlined,
+            Icons.home,
             color: Colors.white,
+            size: 30,
           ),
           Icon(
-            Icons.shopping_bag_outlined,
+            Icons.shopping_bag,
             color: Colors.white,
+            size: 30,
           ),
           Icon(
-            Icons.wallet_outlined,
+            Icons.wallet,
             color: Colors.white,
+            size: 30,
           ),
           Icon(
-            Icons.person_outlined,
+            Icons.person,
             color: Colors.white,
+            size: 30,
           ),
         ],
       ),

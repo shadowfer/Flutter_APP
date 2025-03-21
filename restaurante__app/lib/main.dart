@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurante__app/pages/bottomnav.dart';
+import 'package:restaurante__app/pages/detail_page.dart';
 import 'package:restaurante__app/pages/home.dart';
 
 void main() {
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home:
-          Bottomnav(), //AQUI ES DONDE CAMBIO DE PAGINA , HOME/ONBOARGING PARA EL EMULADOR
+          DetailPage(), //AQUI ES DONDE CAMBIO DE PAGINA , HOME/ONBOARGING PARA EL EMULADOR
     );
   }
 }
