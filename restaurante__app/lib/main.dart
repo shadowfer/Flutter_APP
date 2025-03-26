@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:
-          Login(), //AQUI ES DONDE CAMBIO DE PAGINA , HOME/ONBOARGING PARA EL EMULADOR
+      home: Signup(),
+      //Bottomnav(), //AQUI ES DONDE CAMBIO DE PAGINA , HOME/ONBOARGING PARA EL EMULADOR
     );
   }
 }

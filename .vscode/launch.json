@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense para saber los atributos posibles.
+    // Mantenga el puntero para ver las descripciones de los existentes atributos.
+    // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "restaurante__app",
+            "cwd": "restaurante__app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "restaurante__app (profile mode)",
+            "cwd": "restaurante__app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "restaurante__app (release mode)",
+            "cwd": "restaurante__app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
