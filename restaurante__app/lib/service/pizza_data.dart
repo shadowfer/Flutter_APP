@@ -8,7 +8,7 @@ List<PizzaModel> getPizza() {
   PizzaModel pizzaModel = PizzaModel(
     name: "Cheese pizza", // Nombre de la pizza
     image: "images/pizza1.png", // Imagen de la pizza
-    price: "50", // Precio de la pizza
+    price: "50", description: null, // Precio de la pizza
   );
   pizza.add(pizzaModel);
 
@@ -16,7 +16,7 @@ List<PizzaModel> getPizza() {
   pizzaModel = PizzaModel(
     name: "Margarita", // Nombre de la pizza
     image: "images/pizza2.png", // Imagen de la pizza
-    price: "65", // Precio de la pizza
+    price: "65", description: null, // Precio de la pizza
   );
   pizza.add(pizzaModel);
 
@@ -25,6 +25,7 @@ List<PizzaModel> getPizza() {
     name: "Fungus pizza",
     image: "images/pizza3.png",
     price: "60",
+    description: null,
   );
   pizza.add(pizzaModel);
 
@@ -32,6 +33,7 @@ List<PizzaModel> getPizza() {
     name: "Pepperoni",
     image: "images/pizza4.png",
     price: "75",
+    description: null,
   );
   pizza.add(pizzaModel);
 

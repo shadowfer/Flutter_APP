@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:restaurante__app/firebase_options.dart';
 import 'package:restaurante__app/pages/bottomnav.dart';
 import 'package:restaurante__app/pages/detail_page.dart';
 import 'package:restaurante__app/pages/home.dart';
 import 'package:restaurante__app/pages/login.dart';
 import 'package:restaurante__app/pages/signup.dart';
+import 'package:restaurante__app/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

@@ -7,7 +7,7 @@ List<MexicanModel> getMexican() {
   MexicanModel mexicanModel = MexicanModel(
     name: "Tacos", // Nombre de la comida mexicana
     image: "images/tacos.png", // Ruta de la imagen
-    price: "50", // Precio
+    price: "50", description: null, // Precio
   );
   mexican.add(mexicanModel);
 
@@ -15,7 +15,7 @@ List<MexicanModel> getMexican() {
   mexicanModel = MexicanModel(
     name: "Burritos", // Nombre de la comida mexicana
     image: "images/tacos.png", // Ruta de la imagen
-    price: "70", // Precio
+    price: "70", description: null, // Precio
   );
   mexican.add(mexicanModel);
 
@@ -24,6 +24,7 @@ List<MexicanModel> getMexican() {
     name: "Enchiladas",
     image: "images/tacos.png",
     price: "80",
+    description: null,
   );
   mexican.add(mexicanModel);
 
@@ -31,6 +32,7 @@ List<MexicanModel> getMexican() {
     name: "Enchiladas",
     image: "images/tacos.png",
     price: "80",
+    description: null,
   );
   mexican.add(mexicanModel);
 

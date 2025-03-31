@@ -7,5 +7,6 @@ class ChineseModel {
     required this.name,
     required this.image,
     required this.price,
+    required description,
   });
 }

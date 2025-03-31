@@ -7,7 +7,7 @@ List<ChineseModel> getChinese() {
   ChineseModel chineseModel = ChineseModel(
     name: "Chow Mein", // Nombre de la comida china
     image: "images/pan.png", // Ruta de la imagen
-    price: "80", // Precio
+    price: "80", description: null, // Precio
   );
   chinese.add(chineseModel);
 
@@ -15,7 +15,7 @@ List<ChineseModel> getChinese() {
   chineseModel = ChineseModel(
     name: "Kung Pao", // Nombre de la comida china
     image: "images/pan.png", // Ruta de la imagen
-    price: "90", // Precio
+    price: "90", description: null, // Precio
   );
   chinese.add(chineseModel);
 
@@ -24,6 +24,7 @@ List<ChineseModel> getChinese() {
     name: "Pork",
     image: "images/pan.png",
     price: "100",
+    description: null,
   );
   chinese.add(chineseModel);
 
@@ -32,6 +33,7 @@ List<ChineseModel> getChinese() {
     name: "Pork",
     image: "images/pan.png",
     price: "110",
+    description: null,
   );
   chinese.add(chineseModel);
 

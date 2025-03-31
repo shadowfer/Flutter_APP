@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:restaurante__app/pages/bottomnav.dart';
 import 'package:restaurante__app/pages/signup.dart';
+import 'package:restaurante__app/service/auth_service.dart';
 import 'package:restaurante__app/service/widget_support.dart';
 
 class Login extends StatefulWidget {
@@ -10,6 +12,65 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  void _login() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      await _authService.signInWithEmailAndPassword(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+      );
+
+      // Navegar a la pantalla principal después del inicio de sesión exitoso
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Bottomnav()),
+      );
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _resetPassword() async {
+    if (_emailController.text.isEmpty) {
+      setState(() {
+        _errorMessage =
+            "Por favor, ingresa tu email para restablecer la contraseña";
+      });
+      return;
+    }
+
+    try {
+      await _authService.resetPassword(_emailController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text("Se ha enviado un correo para restablecer tu contraseña"),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,103 +118,101 @@ class _LoginState extends State<Login> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 20,
-                      ),
+                      SizedBox(height: 20),
                       Center(
                         child: Text(
-                          "Login",
+                          "Iniciar Sesión",
                           style: AppWidget.HeadLineTextFieldStyle(),
                         ),
                       ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
+                      SizedBox(height: 20),
                       Text(
                         "Email",
                         style: AppWidget.SignUpTextFeildStyle(),
                       ),
-                      SizedBox(
-                        height: 5.0,
-                      ),
+                      SizedBox(height: 5),
                       Container(
                         decoration: BoxDecoration(
                             color: Color(0xFFececf8),
                             borderRadius: BorderRadius.circular(10)),
                         child: TextField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: "Enter Email",
+                              hintText: "Ingresa tu email",
                               prefixIcon: Icon(Icons.mail_outline)),
                         ),
                       ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
+                      SizedBox(height: 20),
                       Text(
-                        "Password",
+                        "Contraseña",
                         style: AppWidget.SignUpTextFeildStyle(),
                       ),
-                      SizedBox(
-                        height: 5.0,
-                      ),
+                      SizedBox(height: 5),
                       Container(
                         decoration: BoxDecoration(
                             color: Color(0xFFececf8),
                             borderRadius: BorderRadius.circular(10)),
                         child: TextField(
+                          controller: _passwordController,
+                          obscureText: true,
                           decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: "Enter Password",
+                              hintText: "Ingresa tu contraseña",
                               prefixIcon: Icon(Icons.lock_outline)),
                         ),
                       ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
+                      SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("Forget Password?",
-                              style: AppWidget.simpleTextFieldStyle())
+                          GestureDetector(
+                            onTap: _resetPassword,
+                            child: Text("¿Olvidaste tu contraseña?",
+                                style: AppWidget.simpleTextFieldStyle()),
+                          )
                         ],
                       ),
-                      SizedBox(
-                        height: 40.0,
-                      ),
-                      Center(
-                        child: Container(
-                          height: 50,
-                          width: 200,
-                          decoration: BoxDecoration(
-                              color: Color(0xffef2b39),
-                              borderRadius: BorderRadius.circular(30)),
-                          child: Center(
+                      if (_errorMessage != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Text(
+                            _errorMessage!,
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: _isLoading ? null : _login,
+                        child: Center(
+                          child: Container(
+                            height: 50,
+                            width: 200,
+                            decoration: BoxDecoration(
+                                color: Color(0xffef2b39),
+                                borderRadius: BorderRadius.circular(30)),
                             child: Center(
-                              child: Text(
-                                "Log In",
-                                style: AppWidget.boldwhiteTextFieldStyle(),
-                              ),
+                              child: _isLoading
+                                  ? CircularProgressIndicator(
+                                      color: Colors.white)
+                                  : Text(
+                                      "Iniciar Sesión",
+                                      style:
+                                          AppWidget.boldwhiteTextFieldStyle(),
+                                    ),
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
+                      SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Dont't have account?",
+                            "¿No tienes una cuenta?",
                             style: AppWidget.simpleTextFieldStyle(),
                           ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
+                          SizedBox(width: 5),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -162,7 +221,7 @@ class _LoginState extends State<Login> {
                                       builder: (context) => Signup()));
                             },
                             child: Text(
-                              "SignUp",
+                              "Regístrate",
                               style: AppWidget.boldTextFeildStyle(),
                             ),
                           )

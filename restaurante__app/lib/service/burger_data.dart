@@ -10,7 +10,7 @@ List<BurgerModel> getburger() {
   BurgerModel burgerModel = BurgerModel(
     name: "Cheese burger", // Nombre de la burger
     image: "images/burger1.png", // Ruta de la imagen de la burger
-    price: "80", // Precio de la burger
+    price: "80", description: null, // Precio de la burger
   );
   burger.add(burgerModel); // Añadir la burger a la lista
 
@@ -18,21 +18,21 @@ List<BurgerModel> getburger() {
   burgerModel = BurgerModel(
     name: "Vegan", // Nombre de la burger
     image: "images/burger2.png", // Ruta de la imagen de la burger
-    price: "75", // Precio de la burger
+    price: "75", description: null, // Precio de la burger
   );
   burger.add(burgerModel); // Añadir la burger a la lista
 
   burgerModel = BurgerModel(
     name: "Chicken", // Nombre de la burger
     image: "images/burger2.png", // Ruta de la imagen de la burger
-    price: "85", // Precio de la burger
+    price: "85", description: null, // Precio de la burger
   );
   burger.add(burgerModel); // Añadir la burger a la lista
 
   burgerModel = BurgerModel(
     name: "BQQ", // Nombre de la burger
     image: "images/burger2.png", // Ruta de la imagen de la burger
-    price: "95", // Precio de la burger
+    price: "95", description: null, // Precio de la burger
   );
   burger.add(burgerModel); // Añadir la burger a la lista
 
