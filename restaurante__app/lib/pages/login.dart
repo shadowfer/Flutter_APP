@@ -1,9 +1,11 @@
+// Importaciones necesarias
 import 'package:flutter/material.dart';
-import 'package:restaurante__app/pages/bottomnav.dart';
-import 'package:restaurante__app/pages/signup.dart';
-import 'package:restaurante__app/service/auth_service.dart';
-import 'package:restaurante__app/service/widget_support.dart';
+import 'package:restaurante__app/pages/bottomnav.dart'; // Para navegación a la página principal
+import 'package:restaurante__app/pages/signup.dart'; // Para navegación al registro
+import 'package:restaurante__app/service/auth_service.dart'; // Servicio de autenticación
+import 'package:restaurante__app/service/widget_support.dart'; // Estilos de texto
 
+// Widget con estado para la pantalla de inicio de sesión
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -11,20 +13,28 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+// Estado para la pantalla de inicio de sesión
 class _LoginState extends State<Login> {
+  // Controladores para los campos de texto
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  // Instancia del servicio de autenticación
   final AuthService _authService = AuthService();
+
+  // Variables para controlar estado de carga y errores
   bool _isLoading = false;
   String? _errorMessage;
 
+  // Método para iniciar sesión
   void _login() async {
     setState(() {
-      _isLoading = true;
-      _errorMessage = null;
+      _isLoading = true; // Activa indicador de carga
+      _errorMessage = null; // Limpia mensajes de error anteriores
     });
 
     try {
+      // Intenta iniciar sesión con el servicio de autenticación
       await _authService.signInWithEmailAndPassword(
         _emailController.text.trim(),
         _passwordController.text.trim(),
@@ -37,16 +47,18 @@ class _LoginState extends State<Login> {
       );
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = e.toString(); // Guarda el mensaje de error
       });
     } finally {
       setState(() {
-        _isLoading = false;
+        _isLoading = false; // Desactiva el indicador de carga
       });
     }
   }
 
+  // Método para restablecer contraseña
   void _resetPassword() async {
+    // Verifica que se haya proporcionado un email
     if (_emailController.text.isEmpty) {
       setState(() {
         _errorMessage =
@@ -56,7 +68,10 @@ class _LoginState extends State<Login> {
     }
 
     try {
+      // Envía el correo de restablecimiento
       await _authService.resetPassword(_emailController.text.trim());
+
+      // Muestra mensaje de éxito
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content:
@@ -66,7 +81,7 @@ class _LoginState extends State<Login> {
       );
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = e.toString(); // Guarda el mensaje de error
       });
     }
   }
@@ -77,18 +92,20 @@ class _LoginState extends State<Login> {
       body: Container(
         child: Stack(
           children: [
+            // Contenedor superior con color de fondo y logo
             Container(
               height: MediaQuery.of(context).size.height / 2.5,
               padding: EdgeInsets.only(top: 30),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                color: Color(0xffffefbf),
+                color: Color(0xffffefbf), // Color amarillo claro
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(40),
                     bottomRight: Radius.circular(40)),
               ),
               child: Column(
                 children: [
+                  // Logo e imágenes
                   Image.asset("images/pan.png",
                       height: 180, fit: BoxFit.fill, width: 240),
                   Image.asset(
@@ -100,6 +117,8 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
+
+            // Tarjeta con formulario de inicio de sesión
             Container(
               margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height / 3.2,
@@ -119,6 +138,8 @@ class _LoginState extends State<Login> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
+
+                      // Título del formulario
                       Center(
                         child: Text(
                           "Iniciar Sesión",
@@ -126,6 +147,8 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(height: 20),
+
+                      // Campo de email
                       Text(
                         "Email",
                         style: AppWidget.SignUpTextFeildStyle(),
@@ -133,7 +156,7 @@ class _LoginState extends State<Login> {
                       SizedBox(height: 5),
                       Container(
                         decoration: BoxDecoration(
-                            color: Color(0xFFececf8),
+                            color: Color(0xFFececf8), // Color gris claro
                             borderRadius: BorderRadius.circular(10)),
                         child: TextField(
                           controller: _emailController,
@@ -144,6 +167,8 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(height: 20),
+
+                      // Campo de contraseña
                       Text(
                         "Contraseña",
                         style: AppWidget.SignUpTextFeildStyle(),
@@ -155,7 +180,8 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(10)),
                         child: TextField(
                           controller: _passwordController,
-                          obscureText: true,
+                          obscureText:
+                              true, // Oculta el texto para la contraseña
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: "Ingresa tu contraseña",
@@ -163,16 +189,21 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(height: 10),
+
+                      // Enlace para recuperar contraseña
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           GestureDetector(
-                            onTap: _resetPassword,
+                            onTap:
+                                _resetPassword, // Llama al método de recuperación
                             child: Text("¿Olvidaste tu contraseña?",
                                 style: AppWidget.simpleTextFieldStyle()),
                           )
                         ],
                       ),
+
+                      // Mensaje de error si existe
                       if (_errorMessage != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 10.0),
@@ -182,19 +213,23 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       SizedBox(height: 20),
+
+                      // Botón de iniciar sesión
                       GestureDetector(
-                        onTap: _isLoading ? null : _login,
+                        onTap: _isLoading
+                            ? null
+                            : _login, // Desactivado durante carga
                         child: Center(
                           child: Container(
                             height: 50,
                             width: 200,
                             decoration: BoxDecoration(
-                                color: Color(0xffef2b39),
+                                color: Color(0xffef2b39), // Color rojo
                                 borderRadius: BorderRadius.circular(30)),
                             child: Center(
                               child: _isLoading
                                   ? CircularProgressIndicator(
-                                      color: Colors.white)
+                                      color: Colors.white) // Indicador de carga
                                   : Text(
                                       "Iniciar Sesión",
                                       style:
@@ -205,6 +240,8 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(height: 20),
+
+                      // Enlace para registrarse
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

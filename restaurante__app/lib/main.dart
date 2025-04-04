@@ -1,139 +1,129 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:restaurante__app/firebase_options.dart';
-import 'package:restaurante__app/pages/bottomnav.dart';
-import 'package:restaurante__app/pages/detail_page.dart';
-import 'package:restaurante__app/pages/home.dart';
-import 'package:restaurante__app/pages/login.dart';
-import 'package:restaurante__app/pages/signup.dart';
-import 'package:restaurante__app/firebase_options.dart';
+/*
+ * Archivo principal de la aplicación Flutter para restaurante (FoodGo)
+ * Este archivo contiene el punto de entrada de la aplicación y la configuración inicial
+ */
 
+// Importaciones necesarias para la aplicación
+import 'package:flutter/material.dart'; // Material Design widgets y estilos
+import 'package:firebase_core/firebase_core.dart'; // Configuración básica de Firebase
+import 'package:restaurante__app/firebase_options.dart'; // Opciones específicas de Firebase para esta app
+import 'package:restaurante__app/pages/bottomnav.dart'; // Barra de navegación inferior
+import 'package:restaurante__app/pages/detail_page.dart'; // Página de detalles del producto
+import 'package:restaurante__app/pages/home.dart'; // Página principal
+import 'package:restaurante__app/pages/login.dart'; // Página de inicio de sesión
+import 'package:restaurante__app/pages/signup.dart'; // Página de registro
+import 'package:restaurante__app/firebase_options.dart'; // Duplicada, podría eliminarse
+
+// Función principal que inicia la aplicación
 void main() async {
+  // Asegura que Flutter esté inicializado antes de usar plugins
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializa Firebase con las opciones específicas para la plataforma actual
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Ejecuta la aplicación comenzando con el widget MyApp
   runApp(const MyApp());
 }
 
+// Clase principal de la aplicación, define el tema y la navegación inicial
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key}); // Constructor que acepta una key opcional
 
-  // This widget is the root of your application.
+  // Este método construye la interfaz de usuario principal
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
+      title:
+          'Flutter Demo', // Título de la aplicación (aparece en el task switcher)
+      debugShowCheckedModeBanner:
+          false, // Oculta el banner de debug en la esquina
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
+        // Define el tema de la aplicación con un esquema de colores morado
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        useMaterial3: true, // Activa el diseño Material 3
       ),
-      home: Signup(),
-      //Bottomnav(), //AQUI ES DONDE CAMBIO DE PAGINA , HOME/ONBOARGING PARA EL EMULADOR
+      home:
+          Bottomnav(), // Define la pantalla inicial como la barra de navegación
+      // Comentario: Se puede cambiar entre Bottomnav() y HOME/ONBOARDING para pruebas
     );
   }
 }
 
+// Clase para una página de inicio con contador (ejemplo incluido por defecto en Flutter)
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage(
+      {super.key, required this.title}); // Constructor que requiere un título
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+  // Este widget es la página de inicio de la aplicación
+  // Es stateful, lo que significa que tiene un objeto State asociado
+  // que contiene los campos que afectan su apariencia
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  // Esta clase es la configuración del estado
+  // Contiene los valores proporcionados por el widget padre (en este caso, App)
+  // y es utilizada por el método build del State
 
-  final String title;
+  final String title; // Título de la página, proporcionado por el widget padre
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() =>
+      _MyHomePageState(); // Crea el estado asociado a este widget
 }
 
+// Estado asociado a MyHomePage
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _counter = 0; // Variable que almacena el contador
 
+  // Método para incrementar el contador
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
+      // Esta llamada a setState le dice al framework Flutter que algo ha cambiado
+      // en este State, lo que causa que se vuelva a ejecutar el método build
+      // para que la pantalla refleje los valores actualizados
       _counter++;
     });
   }
 
+  // Método que construye la interfaz de usuario de esta página
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    // Este método se ejecuta cada vez que se llama a setState
+    // El framework Flutter ha sido optimizado para hacer que la ejecución
+    // de los métodos build sea rápida
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
+        // La barra superior de la aplicación
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(widget.title), // Muestra el título proporcionado
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+        // Center es un widget de diseño que posiciona su hijo en el centro
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+          // Column es un widget de diseño que organiza sus hijos verticalmente
+          // Por defecto, se adapta al ancho de sus hijos y trata de ser
+          // tan alto como su padre
+          mainAxisAlignment:
+              MainAxisAlignment.center, // Centra los hijos verticalmente
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              'You have pushed the button this many times:', // Texto estático
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              '$_counter', // Muestra el valor actual del contador
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium, // Estilo de texto desde el tema
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        onPressed: _incrementCounter, // Llama a incrementar cuando se presiona
+        tooltip: 'Increment', // Texto que aparece al mantener presionado
+        child: const Icon(Icons.add), // Icono de suma
+      ),
     );
   }
 }

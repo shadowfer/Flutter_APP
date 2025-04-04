@@ -1,9 +1,11 @@
+// Importaciones necesarias
 import 'package:flutter/material.dart';
-import 'package:restaurante__app/pages/bottomnav.dart';
-import 'package:restaurante__app/pages/login.dart';
-import 'package:restaurante__app/service/auth_service.dart';
-import 'package:restaurante__app/service/widget_support.dart';
+import 'package:restaurante__app/pages/bottomnav.dart'; // Para navegación a la página principal
+import 'package:restaurante__app/pages/login.dart'; // Para navegación a inicio de sesión
+import 'package:restaurante__app/service/auth_service.dart'; // Servicio de autenticación
+import 'package:restaurante__app/service/widget_support.dart'; // Estilos de texto
 
+// Widget con estado para la página de registro
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -11,21 +13,28 @@ class Signup extends StatefulWidget {
   State<Signup> createState() => _SignupState();
 }
 
+// Estado para la página de registro
 class _SignupState extends State<Signup> {
+  // Controladores para los campos de texto
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final AuthService _authService = AuthService();
+
+  final AuthService _authService = AuthService(); // Servicio de autenticación
+
+  // Variables para controlar estado de carga y errores
   bool _isLoading = false;
   String? _errorMessage;
 
+  // Método para crear una nueva cuenta
   void _signUp() async {
     setState(() {
-      _isLoading = true;
-      _errorMessage = null;
+      _isLoading = true; // Activa el indicador de carga
+      _errorMessage = null; // Limpia mensajes de error anteriores
     });
 
     try {
+      // Intenta registrar al usuario con el servicio de autenticación
       await _authService.signUpWithEmailAndPassword(
         _emailController.text.trim(),
         _passwordController.text.trim(),
@@ -39,11 +48,11 @@ class _SignupState extends State<Signup> {
       );
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = e.toString(); // Guarda el mensaje de error
       });
     } finally {
       setState(() {
-        _isLoading = false;
+        _isLoading = false; // Desactiva el indicador de carga
       });
     }
   }
@@ -54,11 +63,12 @@ class _SignupState extends State<Signup> {
       body: Container(
         child: Stack(
           children: [
+            // Contenedor superior con color de fondo
             Container(
               height: MediaQuery.of(context).size.height / 2.5,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                color: Color(0xffffefbf),
+                color: Color(0xffffefbf), // Color amarillo claro
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
@@ -67,6 +77,7 @@ class _SignupState extends State<Signup> {
               child: Column(
                 children: [
                   SizedBox(height: 40),
+                  // Logo
                   Image.asset(
                     "images/logo.png",
                     width: 170,
@@ -76,6 +87,8 @@ class _SignupState extends State<Signup> {
                 ],
               ),
             ),
+
+            // Tarjeta con formulario de registro
             Container(
               margin: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height / 3.5,
@@ -97,6 +110,8 @@ class _SignupState extends State<Signup> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
+
+                      // Título del formulario
                       Center(
                         child: Text(
                           "Registro",
@@ -104,6 +119,8 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       SizedBox(height: 20),
+
+                      // Campo de nombre
                       Text(
                         "Nombre",
                         style: AppWidget.SignUpTextFeildStyle(),
@@ -111,7 +128,7 @@ class _SignupState extends State<Signup> {
                       SizedBox(height: 5),
                       Container(
                         decoration: BoxDecoration(
-                          color: Color(0xFFececf8),
+                          color: Color(0xFFececf8), // Color gris claro
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: TextField(
@@ -124,6 +141,8 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       SizedBox(height: 15),
+
+                      // Campo de email
                       Text(
                         "Email",
                         style: AppWidget.SignUpTextFeildStyle(),
@@ -144,6 +163,8 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       SizedBox(height: 15),
+
+                      // Campo de contraseña
                       Text(
                         "Contraseña",
                         style: AppWidget.SignUpTextFeildStyle(),
@@ -156,7 +177,8 @@ class _SignupState extends State<Signup> {
                         ),
                         child: TextField(
                           controller: _passwordController,
-                          obscureText: true,
+                          obscureText:
+                              true, // Oculta el texto para la contraseña
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Ingresa tu contraseña",
@@ -164,6 +186,8 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                       ),
+
+                      // Mensaje de error si existe
                       if (_errorMessage != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 10.0),
@@ -173,20 +197,24 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                       SizedBox(height: 30),
+
+                      // Botón de registro
                       GestureDetector(
-                        onTap: _isLoading ? null : _signUp,
+                        onTap: _isLoading
+                            ? null
+                            : _signUp, // Desactivado durante carga
                         child: Center(
                           child: Container(
                             height: 50,
                             width: 200,
                             decoration: BoxDecoration(
-                              color: Color(0xffef2b39),
+                              color: Color(0xffef2b39), // Color rojo
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: Center(
                               child: _isLoading
                                   ? CircularProgressIndicator(
-                                      color: Colors.white)
+                                      color: Colors.white) // Indicador de carga
                                   : Text(
                                       "Registrarse",
                                       style:
@@ -197,6 +225,8 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       SizedBox(height: 20),
+
+                      // Enlace para ir a inicio de sesión
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
