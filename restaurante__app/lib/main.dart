@@ -13,6 +13,7 @@ import 'package:restaurante__app/pages/home.dart'; // Página principal
 import 'package:restaurante__app/pages/login.dart'; // Página de inicio de sesión
 import 'package:restaurante__app/pages/signup.dart'; // Página de registro
 import 'package:restaurante__app/firebase_options.dart'; // Duplicada, podría eliminarse
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Función principal que inicia la aplicación
 void main() async {

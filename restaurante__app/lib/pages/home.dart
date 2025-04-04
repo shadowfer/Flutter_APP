@@ -293,8 +293,11 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // Widget para mostrar un producto de comida
+// Actualiza el método FoodTile en home.dart
   Widget FoodTile(String name, String image, String price) {
+    // Generar un ID único para cada producto (puedes usar un enfoque diferente si tienes IDs reales)
+    String id = name.toLowerCase().replaceAll(' ', '_');
+
     return Container(
       margin: EdgeInsets.only(right: 10.0),
       padding: EdgeInsets.all(10.0),
@@ -344,8 +347,19 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          DetailPage(image: image, name: name, price: price),
+                      builder: (context) => DetailPage(
+                        id: id,
+                        image: image,
+                        name: name,
+                        price: price,
+                        category: track == "0"
+                            ? "pizza"
+                            : track == "1"
+                                ? "burger"
+                                : track == "2"
+                                    ? "chinese"
+                                    : "mexican",
+                      ),
                     ),
                   );
                 },

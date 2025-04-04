@@ -9,4 +9,6 @@ class ChineseModel {
     required this.price,
     required description,
   });
+
+  get description => null;
 }

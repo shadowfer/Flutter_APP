@@ -1,14 +1,28 @@
 // Importaciones necesarias
 import 'package:flutter/material.dart';
-import 'package:restaurante__app/service/widget_support.dart'; // Para estilos de texto
+import 'package:restaurante__app/model/cart_item_model.dart';
+import 'package:restaurante__app/service/cart_service.dart';
+import 'package:restaurante__app/service/widget_support.dart';
 
 // Widget con estado para la página de detalles del producto
 class DetailPage extends StatefulWidget {
   // Propiedades requeridas para mostrar la información del producto
-  String image, name, price;
+  final String id;
+  final String image;
+  final String name;
+  final String price;
+  final String description;
+  final String category;
 
   // Constructor que requiere imagen, nombre y precio
-  DetailPage({required this.image, required this.name, required this.price});
+  DetailPage(
+      {required this.id,
+      required this.image,
+      required this.name,
+      required this.price,
+      this.description =
+          "Enjoy our delicious food, made with fresh ingredients. Perfect for any occasion, it's a classic choice that never goes out of style!",
+      this.category = "food"});
 
   @override
   State<DetailPage> createState() =>
@@ -17,14 +31,61 @@ class DetailPage extends StatefulWidget {
 
 // Estado para la página de detalles
 class _DetailPageState extends State<DetailPage> {
+  final CartService _cartService = CartService();
   int quantity = 1; // Cantidad inicial del producto
   int totalprice = 0; // Precio total inicial
+  bool _isAddingToCart = false;
 
   @override
   void initState() {
     super.initState();
     // Convierte el precio de string a int al inicializar
     totalprice = int.parse(widget.price);
+  }
+
+  Future<void> _addToCart() async {
+    setState(() {
+      _isAddingToCart = true;
+    });
+
+    try {
+      // Crear el item del carrito
+      CartItemModel cartItem = CartItemModel(
+        id: widget.id,
+        name: widget.name,
+        image: widget.image,
+        price: double.parse(widget.price),
+        category: widget.category,
+        quantity: quantity,
+      );
+
+      // Añadir al carrito
+      await _cartService.addToCart(cartItem);
+
+      // Mostrar mensaje de éxito
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${widget.name} añadido al carrito'),
+          action: SnackBarAction(
+            label: 'Ver Carrito',
+            onPressed: () {
+              // Navegar a la página del carrito (índice 1 en bottomnav)
+              Navigator.pop(context,
+                  1); // Devolver el índice para cambiar a la página del carrito
+            },
+          ),
+        ),
+      );
+    } catch (e) {
+      print('Error al añadir al carrito: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al añadir al carrito')),
+      );
+    } finally {
+      setState(() {
+        _isAddingToCart = false;
+      });
+    }
   }
 
   @override
@@ -81,8 +142,7 @@ class _DetailPageState extends State<DetailPage> {
             // Descripción del producto
             Padding(
               padding: const EdgeInsets.only(right: 19.0),
-              child: Text(
-                  "Enjoy our delicious cheese pizza, made with a crispy crust and topped with a generous layer of melted cheese, along with fresh ingredients like tomatoes, olives, mushrooms, and peppers. Perfect for any occasion, it's a classic choice that never goes out of style!"),
+              child: Text(widget.description),
             ),
             SizedBox(height: 30),
 
@@ -180,20 +240,32 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 SizedBox(width: 30.0),
 
-                // Botón de ordenar ahora
-                Material(
-                  elevation: 3.0,
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    height: 70,
-                    width: 200,
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                      child: Text(
-                        "ORDER NOW",
-                        style: AppWidget.whiteTextFieldStyle(),
+                // Botón de añadir al carrito (antes "ORDER NOW")
+                GestureDetector(
+                  onTap: _isAddingToCart ? null : _addToCart,
+                  child: Material(
+                    elevation: 3.0,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      height: 70,
+                      width: 200,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(
+                        child: _isAddingToCart
+                            ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                "ADD TO CART",
+                                style: AppWidget.whiteTextFieldStyle(),
+                              ),
                       ),
                     ),
                   ),

@@ -9,4 +9,6 @@ class MexicanModel {
     required this.price,
     required description,
   });
+
+  get description => null;
 }

@@ -57,4 +57,19 @@ class AppWidget {
         fontSize: 20.0,
         fontWeight: FontWeight.bold);
   }
+
+  // Añade esta función estática
+  static String normalizeImagePath(String path) {
+    if (path.isEmpty) return '';
+
+    // Reemplaza barras invertidas por barras normales
+    String normalized = path.replaceAll('\\', '/');
+
+    // Si la ruta incluye el nombre del proyecto, quítalo
+    if (normalized.startsWith('restaurante__app/')) {
+      normalized = normalized.replaceFirst('restaurante__app/', '');
+    }
+
+    return normalized;
+  }
 }
